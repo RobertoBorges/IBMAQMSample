@@ -10,11 +10,15 @@ string MQ_QUEUE_NAME = "DEV.QUEUE.1";
 string MQ_HOST_NAME = "127.0.0.1";
 string MQ_PORT_PROPERTY = "1414";
 string MQ_CHANNEL_PROPERTY = "DEV.APP.SVRCONN";
+bool MQ_USE_MQCSP_AUTHENTICATION_PROPERTY = true;
+string MQ_USER_ID_PROPERTY = "app";
+string MQ_PASSWORD_PROPERTY = "passw0rd";
 string MQ_SSL_CERT_STORE_PROPERTY = "";
 string MQ_SSL_CIPHER_SPEC_PROPERTY = "";
 string MQ_SSL_PEER_NAME_PROPERTY = "";
 Int32 MQ_SSL_RESET_COUNT_PROPERTY = 0;
 bool MQ_SSL_REVOCATION_CHECK = false;
+
 
 Console.WriteLine("Start of SampleIBMMQ Application\n");
 try
@@ -48,6 +52,9 @@ bool FillMQProperties()
         properties.Add(MQC.SSL_CERT_STORE_PROPERTY, (MQ_SSL_CERT_STORE_PROPERTY != string.Empty) ? MQ_SSL_CERT_STORE_PROPERTY : "");
         properties.Add(MQC.SSL_CIPHER_SPEC_PROPERTY, (MQ_SSL_CIPHER_SPEC_PROPERTY != string.Empty) ? MQ_SSL_CIPHER_SPEC_PROPERTY : "");
         properties.Add(MQC.SSL_PEER_NAME_PROPERTY, (MQ_SSL_PEER_NAME_PROPERTY != string.Empty) ? MQ_SSL_PEER_NAME_PROPERTY : "");
+        properties.Add(MQC.USER_ID_PROPERTY, (MQ_USER_ID_PROPERTY != string.Empty) ? MQ_USER_ID_PROPERTY : "");
+        properties.Add(MQC.PASSWORD_PROPERTY, (MQ_PASSWORD_PROPERTY != string.Empty) ? MQ_PASSWORD_PROPERTY : "");
+        properties.Add(MQC.USE_MQCSP_AUTHENTICATION_PROPERTY, MQ_USE_MQCSP_AUTHENTICATION_PROPERTY);
         properties.Add(MQC.SSL_RESET_COUNT_PROPERTY, MQ_SSL_RESET_COUNT_PROPERTY);
         properties.Add("QueueName", MQ_QUEUE_NAME);
         properties.Add("sslCertRevocationCheck", MQ_SSL_REVOCATION_CHECK);
@@ -74,6 +81,9 @@ void DisplayMQProperties()
     Console.WriteLine("7) sslPeerName = " + properties[MQC.SSL_PEER_NAME_PROPERTY]);
     Console.WriteLine("8) keyResetCount = " + properties[MQC.SSL_RESET_COUNT_PROPERTY]);
     Console.WriteLine("9) sslCertRevocationCheck = " + properties["sslCertRevocationCheck"]);
+    Console.WriteLine("10) Use User name and Password? = " + properties[MQC.USE_MQCSP_AUTHENTICATION_PROPERTY]);
+    Console.WriteLine("11) Username = " + properties[MQC.USER_ID_PROPERTY]);
+    Console.WriteLine("12) Password = " + properties[MQC.PASSWORD_PROPERTY]);
     Console.WriteLine("");
 }
 MQQueueManager CreateQMgrConnection()
@@ -89,6 +99,14 @@ MQQueueManager CreateQMgrConnection()
     if ((string)properties[MQC.SSL_CIPHER_SPEC_PROPERTY] != "") connectionProperties.Add(MQC.SSL_CIPHER_SPEC_PROPERTY, properties[MQC.SSL_CIPHER_SPEC_PROPERTY]);
     if ((string)properties[MQC.SSL_PEER_NAME_PROPERTY] != "") connectionProperties.Add(MQC.SSL_PEER_NAME_PROPERTY, properties[MQC.SSL_PEER_NAME_PROPERTY]);
     if ((int)properties[MQC.SSL_RESET_COUNT_PROPERTY] != 0) connectionProperties.Add(MQC.SSL_RESET_COUNT_PROPERTY, properties[MQC.SSL_RESET_COUNT_PROPERTY]);
+    if ((int)properties[MQC.SSL_RESET_COUNT_PROPERTY] != 0) connectionProperties.Add(MQC.SSL_RESET_COUNT_PROPERTY, properties[MQC.SSL_RESET_COUNT_PROPERTY]);
+    if ((bool)properties[MQC.USE_MQCSP_AUTHENTICATION_PROPERTY] == true)
+    {
+        connectionProperties.Add(MQC.USE_MQCSP_AUTHENTICATION_PROPERTY, properties[MQC.USE_MQCSP_AUTHENTICATION_PROPERTY]);
+        connectionProperties.Add(MQC.USER_ID_PROPERTY, properties[MQC.USER_ID_PROPERTY]);
+        connectionProperties.Add(MQC.PASSWORD_PROPERTY, properties[MQC.PASSWORD_PROPERTY]);
+
+    }
     if ((bool)properties["sslCertRevocationCheck"] != false) MQEnvironment.SSLCertRevocationCheck = true;
 
     // Queue Manager name can be passed instead of "" in the MQQueueManager constructor

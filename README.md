@@ -7,6 +7,7 @@ You can run a queue manager with the default configuration and a listener on por
 docker run \
   --env LICENSE=accept \
   --env MQ_QMGR_NAME=QM1 \
+  --env MQ_APP_PASSWORD=passw0rd \
   --publish 1414:1414 \
   --publish 9443:9443 \
   --detach \
@@ -22,8 +23,8 @@ If you build this image with MQ Advanced for Developers, then an optional set of
 The MQ Developer Defaults supports some customization options, these are all controlled using environment variables:
 
 * **MQ_DEV** - Set this to `false` to stop the default objects being created.
-* **MQ_ADMIN_PASSWORD** - Changes the password of the `admin` user. Must be at least 8 characters long.
-* **MQ_APP_PASSWORD** - Changes the password of the app user. If set, this will cause the `DEV.APP.SVRCONN` channel to become secured and only allow connections that supply a valid userid and password. Must be at least 8 characters long.
+* **MQ_ADMIN_PASSWORD** - Changes the password of the `admin` user, default "passw0rd". Must be at least 8 characters long.
+* **MQ_APP_PASSWORD** - `DEV.APP.SVRCONN` channel is secured and only allow connections that supply a valid userid "app" and password "passw0rd". Must be at least 8 characters long, and you should change for your implementation.
 
 ## Details of the default configuration
 
