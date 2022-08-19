@@ -5,11 +5,9 @@ IDictionary<string, object> properties = null;
 
 /// <summary>
 /// Fill the following with your information
-/// in my example I created an entry on my 
-/// hosts file with the name IBMMQServer.com pointing to 127.0.0.1
 /// </summary>
 string MQ_QUEUE_NAME = "DEV.QUEUE.1";
-string MQ_HOST_NAME = "IBMMQServer.com";
+string MQ_HOST_NAME = "127.0.0.1";
 string MQ_PORT_PROPERTY = "1414";
 string MQ_CHANNEL_PROPERTY = "DEV.APP.SVRCONN";
 string MQ_SSL_CERT_STORE_PROPERTY = "";
